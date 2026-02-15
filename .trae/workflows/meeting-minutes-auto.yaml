@@ -1,0 +1,57 @@
+name: 会议纪要自动生成
+version: "1.0.0"
+description: 从会议录音或笔记自动生成结构化会议纪要
+created_at: "2026-02-11T14:45:00"
+source: "改编自sim工作流模板库"
+category: "automation"
+tags: ["meeting", "minutes", "transcription", "automation", "productivity"]
+triggers:
+  - "生成会议纪要"
+  - "会议记录"
+  - "meeting minutes"
+  - "会议总结"
+steps:
+  - id: 1
+    name: 获取会议输入
+    action: run_command
+    params:
+      command: "echo 获取会议录音或笔记..."
+      save_as: meeting_input
+      timeout: 5
+
+  - id: 2
+    name: 语音转文字
+    action: run_command
+    params:
+      command: "echo 将语音转换为文字..."
+      save_as: transcript
+      timeout: 30
+
+  - id: 3
+    name: 提取关键信息
+    action: run_command
+    params:
+      command: "echo 提取决策、行动项、责任人..."
+      save_as: key_points
+      timeout: 15
+
+  - id: 4
+    name: 生成纪要文档
+    action: generate_document
+    params:
+      template: "meeting-minutes.md"
+      variables:
+        transcript: "{{transcript}}"
+        points: "{{key_points}}"
+        date: "{{current_date}}"
+      output: "docs/meeting-minutes-{{current_date}}.md"
+      save_as: minutes_path
+
+  - id: 5
+    name: 完成通知
+    action: notify
+    params:
+      message: |
+        会议纪要已生成！
+        关键信息: {{key_points}}
+        纪要文档: {{minutes_path}}
