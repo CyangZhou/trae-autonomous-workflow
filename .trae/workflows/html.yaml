@@ -1,0 +1,20 @@
+name: 创建一个简单的HTML页面
+description: '自动生成: 创建一个简单的HTML页面'
+version: 1.0.0
+source: auto_generated
+created_at: '2026-02-12T19:27:48.245283'
+triggers:
+  - 创建一个简单的html页面
+steps:
+  - id: 1
+    name: 创建模块文件
+    action: run_command
+    params:
+      command: 'python -c "content = \"# 新模块\\n\\ndef hello():\\n    return ''Hello, World!''\\n\"; open(\"module.py\", \"w\").write(content)"'
+      timeout: 10
+  - id: 2
+    name: 验证模块可导入
+    action: run_command
+    params:
+      command: python -c "import module; print(module.hello())"
+      timeout: 10
