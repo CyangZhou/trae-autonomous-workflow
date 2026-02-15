@@ -1,0 +1,270 @@
+{
+  "workflows": [
+    {
+      "name": "smart-router",
+      "description": "智能路由系统",
+      "triggers": ["智能路由", "路由"],
+      "file": "smart-router.yaml"
+    },
+    {
+      "name": "swarm-execution",
+      "description": "蜂群并行执行",
+      "triggers": ["蜂群", "并行执行"],
+      "file": "swarm-execution.yaml"
+    },
+    {
+      "name": "static-webpage-development",
+      "description": "静态网页开发",
+      "triggers": ["网页开发", "静态页面"],
+      "file": "static-webpage-development.yaml"
+    },
+    {
+      "name": "code-review",
+      "description": "代码审查",
+      "triggers": ["代码审查", "review"],
+      "file": "code-review.yaml"
+    },
+    {
+      "name": "release-notes",
+      "description": "发布说明生成",
+      "triggers": ["发布说明", "release"],
+      "file": "release-notes.yaml"
+    },
+    {
+      "name": "test-automation",
+      "description": "测试自动化",
+      "triggers": ["测试", "自动化测试"],
+      "file": "test-automation.yaml"
+    },
+    {
+      "name": "git-commit-summary",
+      "description": "Git提交摘要",
+      "triggers": ["提交摘要", "周报"],
+      "file": "git-commit-summary.yaml"
+    },
+    {
+      "name": "dependency-auto-update",
+      "description": "依赖自动更新",
+      "triggers": ["更新依赖", "依赖检查"],
+      "file": "dependency-auto-update.yaml"
+    },
+    {
+      "name": "code-coverage-report",
+      "description": "代码覆盖率报告",
+      "triggers": ["覆盖率", "测试覆盖率"],
+      "file": "code-coverage-report.yaml"
+    },
+    {
+      "name": "security-scan-local",
+      "description": "本地安全扫描",
+      "triggers": ["安全扫描", "漏洞检查"],
+      "file": "security-scan-local.yaml"
+    },
+    {
+      "name": "intelligent-trigger",
+      "description": "智能工作流触发器",
+      "triggers": ["智能工作流", "自动触发"],
+      "file": "intelligent-trigger.yaml"
+    },
+    {
+      "name": "pr-review-assistant",
+      "description": "PR Review助手",
+      "triggers": ["PR Review", "代码审查"],
+      "file": "pr-review-assistant.yaml"
+    },
+    {
+      "name": "pr-size-labeler",
+      "description": "PR大小标签",
+      "triggers": ["PR标签", "PR大小"],
+      "file": "pr-size-labeler.yaml"
+    },
+    {
+      "name": "doc-sync-check",
+      "description": "文档同步检查",
+      "triggers": ["文档同步", "检查文档"],
+      "file": "doc-sync-check.yaml"
+    },
+    {
+      "name": "changelog-generator",
+      "description": "变更日志生成",
+      "triggers": ["changelog", "变更日志"],
+      "file": "changelog-generator.yaml"
+    },
+    {
+      "name": "issue-stale-manager",
+      "description": "Issue Stale管理",
+      "triggers": ["清理Issue", "stale管理"],
+      "file": "issue-stale-manager.yaml"
+    },
+    {
+      "name": "project-stats",
+      "description": "项目统计",
+      "triggers": ["项目统计", "代码统计"],
+      "file": "project-stats.yaml"
+    },
+    {
+      "name": "daily-standup",
+      "description": "每日站会报告",
+      "triggers": ["站会报告", "daily standup"],
+      "file": "daily-standup.yaml"
+    },
+    {
+      "name": "create-readme",
+      "description": "创建README",
+      "triggers": ["创建README", "readme"],
+      "file": "create-readme.yaml"
+    },
+    {
+      "name": "backup-project",
+      "description": "项目备份",
+      "triggers": ["备份项目", "backup"],
+      "file": "backup-project.yaml"
+    },
+    {
+      "name": "api-documentation",
+      "description": "API文档生成",
+      "triggers": ["API文档", "文档生成"],
+      "file": "api-documentation.yaml"
+    },
+    {
+      "name": "code-refactor",
+      "description": "代码重构助手",
+      "triggers": ["重构代码", "代码重构"],
+      "file": "code-refactor.yaml"
+    },
+    {
+      "name": "data-processing",
+      "description": "数据处理自动化",
+      "triggers": ["处理数据", "数据清洗"],
+      "file": "data-processing.yaml"
+    },
+    {
+      "name": "content-publisher",
+      "description": "多平台内容发布",
+      "triggers": ["发布内容", "多平台发布"],
+      "file": "content-publisher.yaml"
+    },
+    {
+      "name": "email-automation",
+      "description": "邮件自动化处理",
+      "triggers": ["处理邮件", "邮件分类"],
+      "file": "email-automation.yaml"
+    },
+    {
+      "name": "invoice-processing",
+      "description": "财务发票处理",
+      "triggers": ["处理发票", "发票自动化"],
+      "file": "invoice-processing.yaml"
+    },
+    {
+      "name": "meeting-minutes-auto",
+      "description": "会议纪要生成",
+      "triggers": ["会议纪要", "会议记录"],
+      "file": "meeting-minutes-auto.yaml"
+    },
+    {
+      "name": "sales-lead-nurturing",
+      "description": "销售线索培育",
+      "triggers": ["销售线索", "线索培育"],
+      "file": "sales-lead-nurturing.yaml"
+    },
+    {
+      "name": "support-ticket-automation",
+      "description": "客服工单自动化",
+      "triggers": ["客服工单", "工单处理"],
+      "file": "support-ticket-automation.yaml"
+    },
+    {
+      "name": "resume-screening",
+      "description": "简历自动筛选",
+      "triggers": ["简历筛选", "招聘"],
+      "file": "resume-screening.yaml"
+    },
+    {
+      "name": "license-compliance",
+      "description": "许可证合规检查",
+      "triggers": ["许可证检查", "合规检查"],
+      "file": "license-compliance.yaml"
+    },
+    {
+      "name": "log-anomaly-detection",
+      "description": "日志异常检测",
+      "triggers": ["日志异常", "日志分析"],
+      "file": "log-anomaly-detection.yaml"
+    },
+    {
+      "name": "performance-benchmark",
+      "description": "性能基准测试",
+      "triggers": ["性能测试", "基准测试"],
+      "file": "performance-benchmark.yaml"
+    },
+    {
+      "name": "docker-build-local",
+      "description": "Docker本地构建",
+      "triggers": ["构建Docker", "docker build"],
+      "file": "docker-build-local.yaml"
+    },
+    {
+      "name": "python-ci-local",
+      "description": "Python本地CI",
+      "triggers": ["Python CI", "本地CI"],
+      "file": "python-ci-local.yaml"
+    },
+    {
+      "name": "smart-release",
+      "description": "智能发布",
+      "triggers": ["发布", "release"],
+      "file": "smart-release.yaml"
+    },
+    {
+      "name": "auto-labeler",
+      "description": "自动文件分类标签",
+      "triggers": ["自动分类", "添加标签"],
+      "file": "auto-labeler.yaml"
+    },
+    {
+      "name": "dependency-check",
+      "description": "依赖检查",
+      "triggers": ["检查依赖", "dependency check"],
+      "file": "dependency-check.yaml"
+    },
+    {
+      "name": "disk-cleanup-analysis",
+      "description": "磁盘清理分析",
+      "triggers": ["C盘清理", "磁盘空间"],
+      "file": "disk-cleanup-analysis.yaml"
+    },
+    {
+      "name": "youtube-research",
+      "description": "YouTube研究助手",
+      "triggers": ["YouTube研究", "视频分析"],
+      "file": "youtube-research.yaml"
+    },
+    {
+      "name": "skill-invoke-workflow",
+      "description": "技能调用工作流",
+      "triggers": ["调用技能", "skill invoke"],
+      "file": "skill-invoke-workflow.yaml"
+    },
+    {
+      "name": "slack-message-classifier",
+      "description": "Slack消息分类",
+      "triggers": ["Slack分类", "消息分类"],
+      "file": "slack-message-classifier.yaml"
+    },
+    {
+      "name": "debt-recovery",
+      "description": "债务追讨OSINT",
+      "triggers": ["欠薪", "老赖", "讨债"],
+      "file": "debt-recovery.yaml"
+    },
+    {
+      "name": "android-bookkeeping",
+      "description": "Android自动记账",
+      "triggers": ["bookkeeping", "android"],
+      "file": "android-bookkeeping.yaml"
+    }
+  ],
+  "total_count": 46,
+  "last_updated": "2026-02-15"
+}
