@@ -1,0 +1,69 @@
+name: smart-router
+description: 智能路由系统 v3.0 - 自动判断任务类型，选择最优执行方式
+version: "3.0.0"
+
+trigger:
+  type: auto
+  keywords:
+    - 开始
+    - 继续
+    - 自主执行
+    - 智能路由
+    - 蜂群
+    - swarm
+
+routing:
+  task_patterns:
+    standard:
+      patterns:
+        - "安全扫描"
+        - "代码审查"
+        - "测试覆盖率"
+      action: "workflow"
+      
+    repetitive:
+      patterns:
+        - "每天"
+        - "每周"
+        - "定时"
+      action: "workflow"
+      
+    complex:
+      patterns:
+        - "重构"
+        - "架构"
+        - "系统设计"
+      action: "swarm"
+
+  swarm_mode:
+    enabled: true
+    trigger_conditions:
+      - complexity: "complex"
+      - user_request: ["并行执行", "蜂群模式"]
+
+validation:
+  enabled: true
+  strict: true
+  
+  code_quality:
+    - name: "语法检查"
+      type: "lint"
+      fail_action: "block"
+
+workflow:
+  steps:
+    - id: 1
+      name: "任务分析"
+      action: "analyze"
+      
+    - id: 2
+      name: "路由决策"
+      action: "route"
+      
+    - id: 3
+      name: "执行任务"
+      action: "execute"
+      
+    - id: 4
+      name: "验证验收"
+      action: "validate"
