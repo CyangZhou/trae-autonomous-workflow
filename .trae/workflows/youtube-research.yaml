@@ -1,0 +1,59 @@
+name: YouTube研究助手
+version: "1.0.0"
+description: 自动分析YouTube视频，提取关键信息，生成研究笔记
+created_at: "2026-02-11T15:45:00"
+source: "改编自内容研究工作流"
+category: "research"
+tags: ["youtube", "research", "video", "analysis", "content"]
+triggers:
+  - "YouTube研究"
+  - "视频分析"
+  - "youtube research"
+  - "视频研究"
+steps:
+  - id: 1
+    name: 获取视频信息
+    action: run_command
+    params:
+      command: "echo 获取YouTube视频元数据..."
+      save_as: video_info
+      timeout: 10
+
+  - id: 2
+    name: 提取字幕
+    action: run_command
+    params:
+      command: "echo 下载并解析视频字幕..."
+      save_as: transcript
+      timeout: 30
+
+  - id: 3
+    name: 分析内容
+    action: run_command
+    params:
+      command: "echo 分析视频主题、关键点和引用..."
+      save_as: analysis
+      timeout: 15
+
+  - id: 4
+    name: 生成研究笔记
+    action: generate_document
+    params:
+      template: "youtube-research.md"
+      variables:
+        info: "{{video_info}}"
+        transcript: "{{transcript}}"
+        analysis: "{{analysis}}"
+        date: "{{current_date}}"
+      output: "docs/youtube-research-{{current_date}}.md"
+      save_as: notes_path
+
+  - id: 5
+    name: 完成通知
+    action: notify
+    params:
+      message: |
+        YouTube研究完成！
+        视频信息: {{video_info}}
+        内容分析: {{analysis}}
+        研究笔记: {{notes_path}}
