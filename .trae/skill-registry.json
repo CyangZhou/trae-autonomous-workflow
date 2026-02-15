@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-15",
+  "installed_skills": [
+    {
+      "name": "autonomous-agent",
+      "version": "9.1.0",
+      "enabled": true,
+      "description": "自主执行总调度器",
+      "triggers": ["开始", "继续", "自主执行", "蜂群", "swarm"]
+    },
+    {
+      "name": "feishu-doc-master",
+      "version": "2.1.0",
+      "enabled": true,
+      "description": "飞书文档大师",
+      "triggers": ["飞书", "云文档", "写文档", "PRD"]
+    },
+    {
+      "name": "workflow-market",
+      "version": "1.0.0",
+      "enabled": true,
+      "description": "工作流市场",
+      "triggers": ["工作流市场", "查找工作流"]
+    },
+    {
+      "name": "neuro-bridge",
+      "version": "1.0.0",
+      "enabled": true,
+      "description": "本地模型控制系统",
+      "triggers": ["系统控制", "键鼠模拟"]
+    },
+    {
+      "name": "skill-manager",
+      "version": "1.0.0",
+      "enabled": true,
+      "description": "技能管理器",
+      "triggers": ["技能管理", "安装技能"]
+    }
+  ]
+}
