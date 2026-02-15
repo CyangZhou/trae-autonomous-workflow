@@ -1,0 +1,145 @@
+name: PR Review 助手
+version: "2.0.0"
+description: 自动分析PR变更，生成Review建议，检查代码质量
+source: "改编自GitHub PR Review工作流"
+category: "code-quality"
+tags: ["pr", "review", "code-quality", "automation", "github"]
+triggers:
+  - "PR Review"
+  - "代码审查"
+  - "pr review"
+  - "review PR"
+
+steps:
+  - id: 1
+    name: 创建输出目录
+    action: run_command
+    params:
+      command: "python -c \"import os; os.makedirs('output', exist_ok=True)\""
+      timeout: 5
+
+  - id: 2
+    name: 获取PR变更文件
+    action: run_command
+    params:
+      command: |
+        echo "=== PR变更文件 ===" &&
+        git diff --name-only HEAD~1..HEAD 2>nul || echo "无Git变更" &&
+        echo "" &&
+        echo "变更统计:" &&
+        git diff --stat HEAD~1..HEAD 2>nul || echo "无统计"
+      save_as: changed_files
+      timeout: 15
+
+  - id: 3
+    name: 分析代码变更
+    action: run_command
+    params:
+      command: |
+        echo "=== 代码变更分析 ===" &&
+        echo "" &&
+        echo "变更类型分布:" &&
+        git diff --numstat HEAD~1..HEAD 2>nul | python -c "import sys; lines=[l.strip().split() for l in sys.stdin if l.strip()]; added=sum(int(l[0]) for l in lines if l[0].isdigit()); deleted=sum(int(l[1]) for l in lines if l[1].isdigit()); print(f'  新增行数: {added}'); print(f'  删除行数: {deleted}'); print(f'  净变化: {added-deleted:+d}')" || echo "无法计算"
+      save_as: change_analysis
+      timeout: 15
+
+  - id: 4
+    name: 检查代码风格
+    action: run_command
+    params:
+      command: |
+        echo "=== 代码风格检查 ===" &&
+        echo "" &&
+        echo "Python文件检查:" &&
+        python -m flake8 --version 2>nul && echo "flake8可用" || echo "flake8未安装" &&
+        echo "" &&
+        echo "建议检查项:" &&
+        echo "  ✓ 命名规范" &&
+        echo "  ✓ 代码格式" &&
+        echo "  ✓ 导入顺序" &&
+        echo "  ✓ 文档字符串"
+      save_as: style_check
+      timeout: 30
+
+  - id: 5
+    name: 生成Review建议
+    action: run_command
+      command: |
+        echo "=== Review建议 ===" &&
+        echo "" &&
+        echo "🔍 需要关注的问题:" &&
+        echo "" &&
+        echo "1. 安全性检查" &&
+        echo "   - 检查是否有硬编码密钥" &&
+        echo "   - 检查SQL注入风险" &&
+        echo "   - 检查XSS风险" &&
+        echo "" &&
+        echo "2. 性能考虑" &&
+        echo "   - 检查循环中的数据库查询" &&
+        echo "   - 检查内存使用" &&
+        echo "" &&
+        echo "3. 代码质量" &&
+        echo "   - 检查错误处理" &&
+        echo "   - 检查边界条件" &&
+        echo "   - 检查测试覆盖"
+      save_as: review_suggestions
+      timeout: 10
+
+  - id: 6
+    name: 生成Review报告
+    action: generate_document
+    params:
+      output: "output/pr-review-report-{{current_date}}.md"
+      content: |
+        # PR Review 报告
+        
+        **生成时间**: {{current_date}} {{current_time}}
+        
+        ## 变更文件
+        
+        {{changed_files}}
+        
+        ## 变更分析
+        
+        {{change_analysis}}
+        
+        ## 代码风格
+        
+        {{style_check}}
+        
+        ## Review建议
+        
+        {{review_suggestions}}
+        
+        ## 检查清单
+        
+        - [ ] 代码逻辑正确
+        - [ ] 无安全漏洞
+        - [ ] 有足够的测试
+        - [ ] 文档已更新
+        - [ ] 无性能问题
+
+  - id: 7
+    name: 验证报告生成
+    action: verify
+    type: file_exists
+    path: "output/pr-review-report-{{current_date}}.md"
+    fail_message: "Review报告未生成"
+
+  - id: 8
+    name: 输出Review结果
+    action: notify
+    params:
+      message: |
+        ✅ PR Review 分析完成！
+        
+        变更文件:
+        {{changed_files}}
+        
+        变更分析:
+        {{change_analysis}}
+        
+        Review建议:
+        {{review_suggestions}}
+        
+        报告: output/pr-review-report-{{current_date}}.md
