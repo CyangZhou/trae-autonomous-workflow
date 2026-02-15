@@ -1,0 +1,22 @@
+name: skill-manager
+version: "1.0.0"
+description: 技能管理器 - 支持技能的安装、卸载、更新和查询
+triggers:
+  - 技能管理
+  - 安装技能
+  - 卸载技能
+  - 更新技能
+priority: 70
+
+core_features:
+  - 技能安装
+  - 技能卸载
+  - 技能更新
+  - 技能列表查询
+  - 技能状态检查
+
+category: "management"
+tags:
+  - "skill"
+  - "management"
+  - "install"
