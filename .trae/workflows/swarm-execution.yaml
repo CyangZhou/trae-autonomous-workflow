@@ -1,0 +1,65 @@
+name: swarm-execution
+description: 智能体蜂群执行工作流 - 并行执行复杂任务
+version: "1.0.0"
+category: "swarm"
+tags: ["parallel", "multi-agent", "orchestration"]
+
+trigger:
+  type: auto
+  keywords:
+    - 蜂群
+    - 并行执行
+    - 多智能体
+    - swarm
+
+swarm_config:
+  orchestrator:
+    skill: "swarm-orchestrator"
+    
+  workers:
+    researcher:
+      max_instances: 2
+      timeout: 180
+      
+    coder:
+      max_instances: 3
+      timeout: 600
+      
+    tester:
+      max_instances: 2
+      timeout: 300
+      
+    writer:
+      max_instances: 1
+      timeout: 180
+
+communication:
+  method: "file_based"
+  queue_file: ".trae/swarm/queue.json"
+
+workflow:
+  phases:
+    - id: 1
+      name: "任务分析"
+      action: "analyze"
+      
+    - id: 2
+      name: "任务分解"
+      action: "decompose"
+      
+    - id: 3
+      name: "并行执行"
+      action: "execute_parallel"
+      parallel: true
+      
+    - id: 4
+      name: "结果整合"
+      action: "aggregate"
+      
+    - id: 5
+      name: "验证验收"
+      action: "validate"
+
+error_handling:
+  max_retries: 3
+  timeout_action: "retry"
