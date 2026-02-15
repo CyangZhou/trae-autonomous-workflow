@@ -1,0 +1,73 @@
+name: 静态网页开发与GitHub Pages部署
+description: 完整的静态网页开发流程，包含需求分析、代码实现、本地预览、GitHub部署
+version: "1.0.0"
+triggers:
+  - "开发网页"
+  - "创建网站"
+  - "部署网页"
+  - "GitHub Pages"
+
+variables:
+  project_name: ""
+  repo_name: ""
+  features: []
+
+steps:
+  - id: 1
+    name: 需求确认
+    action: analyze
+    description: 分析用户需求，确认项目类型、核心功能、视觉风格
+    
+  - id: 2
+    name: 技术选型
+    action: decide
+    description: 根据需求选择技术方案
+    
+  - id: 3
+    name: 资源获取与验证
+    action: resource_acquisition
+    description: 获取并验证外部资源可用性
+    
+  - id: 4
+    name: 代码实现
+    action: implement
+    description: 实现HTML/CSS/JS代码
+    
+  - id: 5
+    name: 本地预览验证
+    action: local_preview
+    description: 启动本地服务器验证
+    
+  - id: 6
+    name: GitHub仓库准备
+    action: github_prepare
+    description: 检查/创建GitHub仓库
+    
+  - id: 7
+    name: 推送到GitHub
+    action: github_push
+    description: 推送代码到GitHub
+    
+  - id: 8
+    name: 启用GitHub Pages
+    action: enable_pages
+    description: 配置GitHub Pages
+    
+  - id: 9
+    name: 线上验证
+    action: verify_production
+    description: 验证线上版本
+    
+  - id: 10
+    name: 完成交付
+    action: deliver
+    description: 向用户报告结果
+
+validation_rules:
+  - name: 资源验证
+    description: 所有外部资源必须验证可用
+    critical: true
+    
+  - name: 本地预览
+    description: 推送前必须本地预览验证
+    critical: true
