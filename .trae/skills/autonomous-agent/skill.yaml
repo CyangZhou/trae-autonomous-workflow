@@ -1,0 +1,60 @@
+name: autonomous-agent
+version: "9.1.0"
+description: 自主执行总调度器 v9.1 - 强制执行版。触发词：开始、继续、自主执行、autonomous、蜂群。支持5场景决策树、3维度质量把关、Skill自动发现、交付文档生成。
+
+checkpoints:
+  enabled: true
+  mandatory: true
+  fail_on_missing: true
+  
+  required_checkpoints:
+    - id: "checkpoint_1"
+      name: "初始化完成"
+    - id: "checkpoint_2"
+      name: "任务解析完成"
+    - id: "checkpoint_3"
+      name: "智能推荐完成"
+    - id: "checkpoint_4"
+      name: "执行模式选择完成"
+    - id: "checkpoint_5"
+      name: "验证完成"
+    - id: "checkpoint_6"
+      name: "反思与进化完成"
+
+trigger_protocol:
+  mandatory: true
+  no_exceptions: true
+  immediate_execution: true
+  
+  trigger_words:
+    - "开始"
+    - "继续"
+    - "自主执行"
+    - "蜂群"
+    - "swarm"
+
+swarm:
+  enabled: true
+  trigger_conditions:
+    min_complexity: 6
+    multi_file: true
+  
+  parallel:
+    enabled: true
+    max_concurrent_tasks: 5
+
+triggers:
+  - "开始"
+  - "继续"
+  - "自主执行"
+  - "蜂群"
+  - "swarm"
+
+category: "automation"
+tags:
+  - "autonomous"
+  - "routing"
+  - "validation"
+  - "self-healing"
+  - "workflow"
+  - "swarm"
