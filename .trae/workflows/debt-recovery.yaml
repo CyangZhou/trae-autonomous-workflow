@@ -1,0 +1,22 @@
+name: debt-recovery-osint
+description: 个人债务追讨与开源情报搜集工作流
+version: 1.0.0
+created_at: 2026-02-14
+triggers:
+  keywords: [欠薪, 老赖, 找人, 讨债, OSINT]
+  complexity_range: {min: 5, max: 9}
+steps:
+  - name: intel_gathering
+    action: manual_osint
+    targets: [wechat, alipay, douyin, xianyu]
+  - name: evidence_locking
+    action: screenshot_archive
+  - name: legal_action
+    action: apply_payment_order
+    doc: 支付令申请书
+  - name: enforcement
+    action: limit_consumption
+skills: [web-search, social-engineering, legal-advisory]
+metadata:
+  author: autonomous-agent
+  risk_level: high
