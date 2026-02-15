@@ -1,0 +1,64 @@
+{
+  "version": "1.0.0",
+  "description": "蜂群智能体注册表",
+  "last_updated": "2026-02-14",
+  
+  "builtin_agents": {
+    "search": {
+      "name": "Researcher",
+      "description": "搜索和调研智能体",
+      "capabilities": ["网络搜索", "代码搜索", "文档检索"],
+      "best_for": ["调研", "搜索", "技术调研"]
+    },
+    "backend-architect": {
+      "name": "Backend Architect",
+      "description": "后端架构智能体",
+      "capabilities": ["后端开发", "API实现", "数据库设计"],
+      "best_for": ["后端开发", "API开发", "服务端代码"]
+    },
+    "frontend-implementation-expert": {
+      "name": "Frontend Expert",
+      "description": "前端界面智能体",
+      "capabilities": ["前端开发", "UI实现", "组件开发"],
+      "best_for": ["前端开发", "UI开发", "网页开发"]
+    },
+    "testing-validation-expert": {
+      "name": "Testing Expert",
+      "description": "测试验证智能体",
+      "capabilities": ["测试编写", "验证脚本", "质量检查"],
+      "best_for": ["测试", "验证", "质量检查"]
+    },
+    "architect-design-expert": {
+      "name": "Architect",
+      "description": "架构设计智能体",
+      "capabilities": ["系统架构", "模块设计", "技术选型"],
+      "best_for": ["架构设计", "系统设计", "技术选型"]
+    },
+    "trae-skill-forge": {
+      "name": "Skill Forge",
+      "description": "技能锻造智能体",
+      "capabilities": ["技能创建", "MCP工具开发"],
+      "best_for": ["创建技能", "开发工具"]
+    },
+    "alpha-picker": {
+      "name": "Alpha Picker",
+      "description": "A股选股智能体",
+      "capabilities": ["股票筛选", "涨停预测"],
+      "best_for": ["选股", "涨停", "A股投资"]
+    }
+  },
+  
+  "task_type_mapping": {
+    "web_development": ["search", "frontend-implementation-expert"],
+    "api_development": ["backend-architect", "testing-validation-expert"],
+    "data_analysis": ["search", "backend-architect"],
+    "automation": ["search", "backend-architect"],
+    "skill_development": ["trae-skill-forge"]
+  },
+  
+  "selection_rules": {
+    "auto_select": true,
+    "prefer_builtin": true,
+    "max_agents_per_task": 5
+  }
+}
