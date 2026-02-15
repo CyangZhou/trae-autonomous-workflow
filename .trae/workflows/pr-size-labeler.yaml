@@ -1,0 +1,129 @@
+name: PR Size Labeler
+version: "2.0.0"
+description: 根据PR变更大小自动添加标签，帮助Review优先级排序
+source: "改编自GitHub Actions size-label工作流"
+category: "automation"
+tags: ["pr", "label", "size", "automation", "github"]
+triggers:
+  - "PR标签"
+  - "PR大小"
+  - "size label"
+  - "label PR"
+
+steps:
+  - id: 1
+    name: 创建输出目录
+    action: run_command
+    params:
+      command: "python -c \"import os; os.makedirs('output', exist_ok=True)\""
+      timeout: 5
+
+  - id: 2
+    name: 计算变更行数
+    action: run_command
+    params:
+      command: |
+        python -c "
+        import subprocess
+        result = subprocess.run(['git', 'diff', '--numstat', 'HEAD~1..HEAD'], capture_output=True, text=True)
+        lines = result.stdout.strip().split('\n') if result.stdout.strip() else []
+        added = sum(int(l.split()[0]) for l in lines if l and l.split()[0].isdigit())
+        deleted = sum(int(l.split()[1]) for l in lines if l and l.split()[1].isdigit())
+        total = added + deleted
+        print(f'新增: {added}行')
+        print(f'删除: {deleted}行')
+        print(f'总计: {total}行')
+        "
+      save_as: line_stats
+      timeout: 15
+
+  - id: 3
+    name: 确定PR大小标签
+    action: run_command
+    params:
+      command: |
+        python -c "
+        import subprocess
+        result = subprocess.run(['git', 'diff', '--numstat', 'HEAD~1..HEAD'], capture_output=True, text=True)
+        lines = result.stdout.strip().split('\n') if result.stdout.strip() else []
+        total = sum(int(l.split()[0]) + int(l.split()[1]) for l in lines if l and l.split()[0].isdigit() and l.split()[1].isdigit())
+        
+        if total < 50:
+            size = 'size/XS'
+            desc = '极小变更 (<50行)'
+        elif total < 150:
+            size = 'size/S'
+            desc = '小型变更 (50-150行)'
+        elif total < 500:
+            size = 'size/M'
+            desc = '中等变更 (150-500行)'
+        elif total < 1000:
+            size = 'size/L'
+            desc = '大型变更 (500-1000行)'
+        else:
+            size = 'size/XL'
+            desc = '超大变更 (>1000行)'
+        
+        print(f'标签: {size}')
+        print(f'描述: {desc}')
+        print(f'变更行数: {total}')
+        "
+      save_as: size_label
+      timeout: 10
+
+  - id: 4
+    name: 生成标签配置
+    action: run_command
+    params:
+      command: |
+        python -c "
+        config = '''# PR Size Labeler 配置
+labels:
+  size/XS:
+    color: 3CBF00
+    description: 极小变更 (<50行)
+  size/S:
+    color: 5D9801
+    description: 小型变更 (50-150行)
+  size/M:
+    color: 7F7203
+    description: 中等变更 (150-500行)
+  size/L:
+    color: A14C05
+    description: 大型变更 (500-1000行)
+  size/XL:
+    color: C32607
+    description: 超大变更 (>1000行)
+
+thresholds:
+  XS: 50
+  S: 150
+  M: 500
+  L: 1000
+'''
+        with open('output/pr-size-labels.yaml', 'w') as f:
+            f.write(config)
+        print('配置文件已生成')
+        "
+
+  - id: 5
+    name: 验证配置文件
+    action: verify
+    type: file_exists
+    path: "output/pr-size-labels.yaml"
+    fail_message: "配置文件未生成"
+
+  - id: 6
+    name: 输出标签结果
+    action: notify
+    params:
+      message: |
+        ✅ PR Size Label 分析完成！
+        
+        行数统计:
+        {{line_stats}}
+        
+        建议标签:
+        {{size_label}}
+        
+        配置文件: output/pr-size-labels.yaml
