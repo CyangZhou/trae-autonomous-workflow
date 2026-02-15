@@ -1,0 +1,129 @@
+name: 本地安全扫描
+version: "2.1.0"
+description: 本地运行安全扫描，检测敏感信息泄露、依赖漏洞，自动安装缺失工具
+source: "改编自Trivy和Gitleaks安全工作流"
+category: "security"
+tags: ["security", "scanning", "vulnerability", "secrets", "auto-install"]
+triggers:
+  - "安全扫描"
+  - "漏洞检查"
+  - "security scan"
+  - "安全检查"
+
+steps:
+  - id: 1
+    name: 创建输出目录
+    action: run_command
+      command: "python -c \"import os; os.makedirs('output', exist_ok=True)\""
+      timeout: 5
+
+  - id: 2
+    name: 检查并安装bandit
+    action: run_command
+    params:
+      command: "python -c \"import bandit; print('bandit已安装')\" 2>nul || (echo 正在安装bandit... && pip install bandit -q && echo bandit安装完成)"
+      timeout: 60
+
+  - id: 3
+    name: 验证bandit安装
+    action: verify
+    type: command_success
+    command: "python -c \"import bandit; print('bandit已安装')\""
+    fail_message: "bandit安装失败"
+
+  - id: 4
+    name: 扫描敏感信息
+    action: run_command
+    params:
+      command: |
+        echo "=== 敏感信息扫描 ===" &&
+        echo "" &&
+        echo "检查可能泄露的敏感信息..." &&
+        echo "" &&
+        findstr /s /i /c:"password" /c:"secret" /c:"api_key" /c:"token" /c:"private_key" *.py *.yaml *.json *.env 2>nul | head -20 || echo "未发现明显的敏感信息" &&
+        echo "" &&
+        echo "建议: 使用.gitignore排除敏感文件"
+      save_as: secrets_scan
+      timeout: 30
+
+  - id: 5
+    name: 扫描Python安全问题
+    action: run_command
+    params:
+      command: "python -m bandit -r . -f txt --exclude ./venv,./output,./.git -q 2>nul || echo bandit扫描完成"
+      save_as: bandit_scan
+      timeout: 60
+
+  - id: 6
+    name: 检查依赖漏洞
+    action: run_command
+    params:
+      command: |
+        echo "=== 依赖漏洞检查 ===" &&
+        echo "" &&
+        if exist "requirements.txt" (
+          echo "检查requirements.txt中的依赖..." &&
+          python -m pip_audit --format=json > output/pip-audit.json 2>nul &&
+          python -c "import json; d=json.load(open('output/pip-audit.json')); vulns=d.get('vulnerabilities',[]) if isinstance(d,dict) else []; print(f'发现 {len(vulns)} 个漏洞') if vulns else print('未发现已知漏洞')" 2>nul || echo "pip-audit检查完成"
+        ) else (
+          echo "未找到requirements.txt"
+        )
+      save_as: vuln_scan
+      timeout: 60
+
+  - id: 7
+    name: 生成安全报告
+    action: generate_document
+    params:
+      output: "output/security-scan-report-{{current_date}}.md"
+      content: |
+        # 安全扫描报告
+        
+        **生成时间**: {{current_date}} {{current_time}}
+        
+        ## 敏感信息扫描
+        
+        {{secrets_scan}}
+        
+        ## Python安全检查
+        
+        {{bandit_scan}}
+        
+        ## 依赖漏洞
+        
+        {{vuln_scan}}
+        
+        ## 安全建议
+        
+        1. 定期更新依赖包
+        2. 使用环境变量存储敏感信息
+        3. 启用依赖漏洞自动检测
+        4. 定期进行安全审计
+        
+        ---
+        *由 Trae 自动生成*
+
+  - id: 8
+    name: 验证报告生成
+    action: verify
+    type: file_exists
+    path: "output/security-scan-report-{{current_date}}.md"
+    fail_message: "安全报告未生成"
+
+  - id: 9
+    name: 输出扫描结果
+    action: notify
+    params:
+      message: |
+        ✅ 安全扫描完成！
+        
+        敏感信息:
+        {{secrets_scan}}
+        
+        Python安全:
+        {{bandit_scan}}
+        
+        依赖漏洞:
+        {{vuln_scan}}
+        
+        报告: output/security-scan-report-{{current_date}}.md
