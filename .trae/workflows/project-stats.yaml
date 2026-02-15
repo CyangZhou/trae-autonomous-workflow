@@ -1,0 +1,118 @@
+name: 项目统计
+description: 生成项目代码统计报告
+version: "2.0.0"
+created_at: "2026-02-11T11:00:00"
+triggers:
+  - "项目统计"
+  - "代码统计"
+  - "project stats"
+
+steps:
+  - id: 1
+    name: 创建输出目录
+    action: run_command
+    params:
+      command: "python -c \"import os; os.makedirs('output', exist_ok=True)\""
+      timeout: 5
+
+  - id: 2
+    name: 统计代码文件
+    action: run_command
+    params:
+      command: |
+        python -c "
+        import os
+        stats = {}
+        for root, dirs, files in os.walk('.'):
+            dirs[:] = [d for d in dirs if d not in ['venv', '__pycache__', 'node_modules', '.git', 'output']]
+            for f in files:
+                ext = os.path.splitext(f)[1]
+                if ext in ['.py', '.js', '.ts', '.jsx', '.tsx', '.java', '.go', '.rs', '.cpp', '.c', '.h', '.md', '.yaml', '.json', '.html', '.css']:
+                    stats[ext] = stats.get(ext, 0) + 1
+        print('文件统计:')
+        for ext, count in sorted(stats.items(), key=lambda x: -x[1]):
+            print(f'  {ext or \"无扩展名\"}: {count}个文件')
+        print(f'\\n总计: {sum(stats.values())}个文件')
+        "
+      save_as: file_stats
+      timeout: 30
+
+  - id: 3
+    name: 统计代码行数
+    action: run_command
+    params:
+      command: |
+        python -c "
+        import os
+        total_lines = 0
+        code_lines = 0
+        comment_lines = 0
+        blank_lines = 0
+        
+        for root, dirs, files in os.walk('.'):
+            dirs[:] = [d for d in dirs if d not in ['venv', '__pycache__', 'node_modules', '.git', 'output']]
+            for f in files:
+                if f.endswith('.py'):
+                    try:
+                        with open(os.path.join(root, f), 'r', encoding='utf-8', errors='ignore') as file:
+                            for line in file:
+                                total_lines += 1
+                                stripped = line.strip()
+                                if not stripped:
+                                    blank_lines += 1
+                                elif stripped.startswith('#'):
+                                    comment_lines += 1
+                                else:
+                                    code_lines += 1
+                    except:
+                        pass
+        
+        print(f'Python代码统计:')
+        print(f'  代码行: {code_lines}')
+        print(f'  注释行: {comment_lines}')
+        print(f'  空白行: {blank_lines}')
+        print(f'  总行数: {total_lines}')
+        "
+      save_as: line_stats
+      timeout: 60
+
+  - id: 4
+    name: 生成统计报告
+    action: generate_document
+    params:
+      output: "output/project-stats-{{current_date}}.md"
+      content: |
+        # 项目统计报告
+        
+        **生成时间**: {{current_date}} {{current_time}}
+        
+        ## 文件统计
+        
+        {{file_stats}}
+        
+        ## 代码行数
+        
+        {{line_stats}}
+        
+        ---
+        *由 Trae 自动生成*
+
+  - id: 5
+    name: 验证报告生成
+    action: verify
+    type: file_exists
+    path: "output/project-stats-{{current_date}}.md"
+    fail_message: "统计报告未生成"
+
+  - id: 6
+    name: 完成通知
+    action: notify
+    params:
+      message: |
+        ✅ 项目统计完成！
+        
+        {{file_stats}}
+        
+        {{line_stats}}
+        
+        报告: output/project-stats-{{current_date}}.md
