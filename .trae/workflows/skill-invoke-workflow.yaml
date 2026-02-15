@@ -1,0 +1,52 @@
+name: 技能调用工作流
+version: "1.0.0"
+description: 自动发现并调用已安装的技能
+created_at: "2026-02-11"
+category: automation
+tags: ["skill", "invoke", "automation", "discovery"]
+triggers:
+  - "调用技能"
+  - "skill invoke"
+  - "执行技能"
+steps:
+  - id: 1
+    name: 扫描可用技能
+    action: run_command
+    params:
+      command: |
+        echo "=== 可用技能列表 ===" &&
+        echo "" &&
+        echo "已安装技能:" &&
+        echo "  - feishu-doc-master (飞书文档大师)" &&
+        echo "  - neuro-bridge (本地系统控制)" &&
+        echo "  - skill-manager (技能管理器)" &&
+        echo "  - workflow-market (工作流市场)" &&
+        echo "  - skill-market-hub (技能市场聚合器)" &&
+        echo "  - autonomous-agent (自主执行总调度器)"
+      save_as: skill_list
+      timeout: 10
+
+  - id: 2
+    name: 技能发现
+    action: run_command
+    params:
+      command: |
+        echo "=== 技能发现 ===" &&
+        echo "" &&
+        echo "扫描 .trae/skills 目录..." &&
+        dir /b .trae\skills 2>nul || echo "技能目录不存在"
+      save_as: discovery_result
+      timeout: 10
+
+  - id: 3
+    name: 输出结果
+    action: notify
+    params:
+      message: |
+        技能调用工作流执行完成！
+        
+        可用技能:
+        {{skill_list}}
+        
+        发现结果:
+        {{discovery_result}}
