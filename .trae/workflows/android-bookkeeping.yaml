@@ -1,0 +1,15 @@
+name: Android Auto Bookkeeping
+description: Build an Android app for automatic bookkeeping via Notification Listener
+version: 1.0.0
+steps:
+  - name: Create Project Structure
+    action: mkdir
+  - name: Implement Service
+    file: BillListenerService.kt
+  - name: Implement UI
+    file: DashboardScreen.kt
+  - name: Build APK
+    script: build_apk.ps1
+triggers:
+  keywords: ["bookkeeping", "android", "wechat", "alipay"]
+skills: ["android-apk-builder"]
