@@ -1,0 +1,29 @@
+name: neuro-bridge
+version: "1.0.0"
+description: 本地系统控制桥接器 - 通过本地模型控制Windows操作系统
+triggers:
+  - 系统控制
+  - 键鼠模拟
+  - 截图分析
+  - OS级命令
+priority: 60
+
+core_features:
+  - 键鼠模拟操作
+  - 截图分析
+  - OS级命令行执行
+  - 绕过沙箱限制
+  - 浏览器自动化
+
+capabilities:
+  - 深度推理
+  - 记忆管理
+  - MCP服务器管理
+  - 代码搜索与理解
+  - 文件修改与验证
+
+category: "system"
+tags:
+  - "automation"
+  - "system-control"
+  - "windows"
