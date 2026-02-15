@@ -1,0 +1,28 @@
+name: code-review
+description: 代码审查工作流 - 自动化代码质量检查和最佳实践建议
+version: "1.0.0"
+triggers:
+  - "代码审查"
+  - "代码检查"
+  - "code review"
+
+steps:
+  - id: 1
+    name: 静态分析
+    action: lint
+    description: 运行ESLint/Pylint等静态分析工具
+    
+  - id: 2
+    name: 安全检查
+    action: security_scan
+    description: 检查常见安全漏洞
+    
+  - id: 3
+    name: 最佳实践检查
+    action: best_practices
+    description: 检查代码是否符合最佳实践
+    
+  - id: 4
+    name: 生成报告
+    action: report
+    description: 生成审查报告和改进建议
