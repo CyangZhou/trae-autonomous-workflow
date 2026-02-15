@@ -1,0 +1,42 @@
+created_at: '2026-02-13'
+description: C盘空间占用分析与自动化清理工作流
+learnings:
+- PowerShell复杂管道在Shell执行时易解析失败
+- 系统路径清理需要更高权限
+metadata:
+  author: autonomous-agent
+  last_used: '2026-02-13'
+  use_count: 1
+name: disk-cleanup-analysis
+skills:
+- autonomous-agent
+- intelligent-workflow-assistant
+source_task: disk-cleanup-20260213
+steps:
+- action: 获取磁盘使用概况 (Get-PSDrive)
+  step: 1
+- action: 扫描大文件夹定位占用源
+  step: 2
+- action: 清理系统/用户临时文件 (Temp)
+  step: 3
+- action: 调用系统磁盘清理工具 (cleanmgr)
+  step: 4
+success_rate: 100
+triggers:
+  complexity_range:
+    max: 6
+    min: 2
+  keywords:
+  - C盘清理
+  - 磁盘空间
+  - 分析
+  - 清理
+  - 系统维护
+  patterns:
+  - 清理.*C盘
+  - 分析.*空间
+  - 磁盘.*爆满
+  project_types:
+  - system
+  - windows
+version: 1.0.0
