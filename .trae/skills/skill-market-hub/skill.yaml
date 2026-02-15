@@ -1,0 +1,20 @@
+name: skill-market-hub
+version: "1.0.0"
+description: 技能市场中心 - 从开源技能市场和GitHub仓库搜索下载AI技能
+triggers:
+  - 技能市场
+  - 下载技能
+  - 技能搜索
+priority: 65
+
+core_features:
+  - 技能市场搜索
+  - GitHub技能下载
+  - 技能安装
+  - 技能推荐
+
+category: "marketplace"
+tags:
+  - "skill"
+  - "market"
+  - "download"
