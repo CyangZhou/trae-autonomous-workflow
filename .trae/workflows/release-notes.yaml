@@ -1,0 +1,28 @@
+name: release-notes
+description: 发布说明生成工作流 - 自动生成版本发布说明
+version: "1.0.0"
+triggers:
+  - "发布说明"
+  - "release notes"
+  - "版本说明"
+
+steps:
+  - id: 1
+    name: 收集变更
+    action: collect_changes
+    description: 从git提交历史收集变更信息
+    
+  - id: 2
+    name: 分类整理
+    action: categorize
+    description: 按类型分类变更（功能/修复/优化）
+    
+  - id: 3
+    name: 生成文档
+    action: generate
+    description: 生成格式化的发布说明
+    
+  - id: 4
+    name: 发布
+    action: publish
+    description: 发布到GitHub Releases
