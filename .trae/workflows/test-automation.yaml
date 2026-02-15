@@ -1,0 +1,28 @@
+name: test-automation
+description: 测试自动化工作流 - 自动生成和运行测试用例
+version: "1.0.0"
+triggers:
+  - "测试"
+  - "单元测试"
+  - "自动化测试"
+
+steps:
+  - id: 1
+    name: 分析代码
+    action: analyze
+    description: 分析需要测试的代码结构
+    
+  - id: 2
+    name: 生成测试
+    action: generate_tests
+    description: 自动生成测试用例
+    
+  - id: 3
+    name: 运行测试
+    action: run_tests
+    description: 执行测试并收集结果
+    
+  - id: 4
+    name: 生成报告
+    action: report
+    description: 生成测试覆盖率报告
