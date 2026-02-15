@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Sensitive data
+.env
+.env.local
+*.pem
+*.key
+
+# Build outputs
+output/
+dist/
+build/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Node modules (if any web components)
+node_modules/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Trae specific
+.trae/memory/sessions/*.md
+.trae/memory/tasks/*.md
+.trae/memory/errors/*.md
+.trae/memory/index.json
+.trae/memory/token_usage.json
+.trae/swarm/swarm_core.db
+.trae/swarm/queue.json
+.trae/.git/
