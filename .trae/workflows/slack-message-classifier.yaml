@@ -1,0 +1,59 @@
+name: Slack消息分类
+version: "1.0.0"
+description: 自动分类Slack消息，提取待办事项，生成摘要
+created_at: "2026-02-11T15:10:00"
+source: "改编自Slack自动化模板"
+category: "automation"
+tags: ["slack", "messaging", "classification", "automation", "productivity"]
+triggers:
+  - "分类消息"
+  - "Slack消息"
+  - "message classifier"
+  - "消息处理"
+steps:
+  - id: 1
+    name: 获取消息数据
+    action: run_command
+    params:
+      command: "echo 获取Slack频道消息..."
+      save_as: messages
+      timeout: 10
+
+  - id: 2
+    name: 消息分类
+    action: run_command
+    params:
+      command: "echo 按类型分类消息(问题/通知/讨论/待办)..."
+      save_as: classified
+      timeout: 10
+
+  - id: 3
+    name: 提取待办事项
+    action: run_command
+    params:
+      command: "echo 从消息中提取待办事项和截止日期..."
+      save_as: todos
+      timeout: 10
+
+  - id: 4
+    name: 生成摘要
+    action: generate_document
+    params:
+      template: "slack-summary.md"
+      variables:
+        messages: "{{messages}}"
+        classified: "{{classified}}"
+        todos: "{{todos}}"
+        date: "{{current_date}}"
+      output: "docs/slack-summary-{{current_date}}.md"
+      save_as: summary_path
+
+  - id: 5
+    name: 完成通知
+    action: notify
+    params:
+      message: |
+        Slack消息分类完成！
+        消息分类: {{classified}}
+        待办事项: {{todos}}
+        摘要: {{summary_path}}
