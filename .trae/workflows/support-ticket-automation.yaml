@@ -1,0 +1,69 @@
+name: 客服工单自动化
+version: "1.0.0"
+description: 自动分类工单、提取关键信息、生成回复建议
+created_at: "2026-02-11T15:05:00"
+source: "改编自Zendesk自动化模板"
+category: "automation"
+tags: ["support", "ticket", "customer-service", "automation", "crm"]
+triggers:
+  - "处理工单"
+  - "客服工单"
+  - "support ticket"
+  - "工单分类"
+steps:
+  - id: 1
+    name: 获取工单数据
+    action: run_command
+    params:
+      command: "echo 从客服系统获取待处理工单..."
+      save_as: tickets
+      timeout: 10
+
+  - id: 2
+    name: 工单分类
+    action: run_command
+    params:
+      command: "echo 按问题类型和优先级分类工单..."
+      save_as: classified_tickets
+      timeout: 10
+
+  - id: 3
+    name: 提取关键信息
+    action: run_command
+    params:
+      command: "echo 提取问题描述、用户信息、历史记录..."
+      save_as: key_info
+      timeout: 10
+
+  - id: 4
+    name: 生成回复建议
+    action: run_command
+    params:
+      command: "echo 基于知识库生成回复建议..."
+      save_as: reply_suggestions
+      timeout: 15
+
+  - id: 5
+    name: 生成处理报告
+    action: generate_document
+    params:
+      template: "support-ticket-report.md"
+      variables:
+        tickets: "{{tickets}}"
+        classified: "{{classified_tickets}}"
+        info: "{{key_info}}"
+        replies: "{{reply_suggestions}}"
+        date: "{{current_date}}"
+      output: "docs/support-ticket-{{current_date}}.md"
+      save_as: report_path
+
+  - id: 6
+    name: 完成通知
+    action: notify
+    params:
+      message: |
+        客服工单处理完成！
+        工单分类: {{classified_tickets}}
+        关键信息: {{key_info}}
+        回复建议: {{reply_suggestions}}
+        报告: {{report_path}}
